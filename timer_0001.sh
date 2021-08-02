@@ -20,10 +20,10 @@ avg_time() {
                }'
 }
 
-# echo "creating cache"
-# build/vowpalwabbit/vw ../0001_ht.dat -c -k --quiet
-# build/vowpalwabbit/vw ../0001_million.dat -c -k --quiet
-# echo ""
+echo "creating cache"
+build/vowpalwabbit/vw ../0001_ht.dat -c -k --quiet
+build/vowpalwabbit/vw ../0001_million.dat -c -k --quiet
+echo ""
 
 # echo "CACHE"
 # echo "0001ht dataset"
@@ -40,28 +40,43 @@ avg_time() {
 # done;
 # echo ""
 
-echo "TEXT"
+echo "PASSES"
+echo "0001ht dataset"
+for i in {1..8}; do 
+echo $i
+avg_time 1 build/vowpalwabbit/vw ../0001_ht.dat --num_parse_threads=$i -c --quiet --passes=100
+sleep 0.01
+done;
+echo "0001million dataset"
+for i in {1..8}; do 
+echo $i
+avg_time 1 build/vowpalwabbit/vw ../0001_million.dat --num_parse_threads=$i -c --quiet --passes=100
+sleep 0.01
+done;
+echo ""
+
+# echo "TEXT"
 # echo "0001ht dataset"
 # for i in {1..8}; do 
 # echo $i
 # avg_time 100 build/vowpalwabbit/vw ../0001_ht.dat --num_parse_threads=$i --quiet
 # sleep 0.01
 # done;
-echo "0001million dataset"
-for i in {1..8}; do 
-echo $i
-avg_time 10 build/vowpalwabbit/vw ../0001_million.dat --num_parse_threads=$i --quiet
-sleep 0.01
-done;
-echo ""
+# echo "0001million dataset"
+# for i in {1..8}; do 
+# echo $i
+# avg_time 10 build/vowpalwabbit/vw ../0001_million.dat --num_parse_threads=$i --quiet
+# sleep 0.01
+# done;
+# echo ""
 
-echo "JSON"
-echo "0001ht dataset"
-for i in {1..8}; do 
-echo $i
-avg_time 100 build/vowpalwabbit/vw ../0001_ht.json --num_parse_threads=$i --json --quiet
-sleep 0.01
-done;
+# echo "JSON"
+# echo "0001ht dataset"
+# for i in {1..8}; do 
+# echo $i
+# avg_time 100 build/vowpalwabbit/vw ../0001_ht.json --num_parse_threads=$i --json --quiet
+# sleep 0.01
+# done;
 # echo "0001million dataset"
 # for i in {1..8}; do 
 # echo $i
