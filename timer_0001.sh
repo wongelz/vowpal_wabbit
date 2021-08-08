@@ -40,20 +40,35 @@ echo ""
 # done;
 # echo ""
 
-echo "PASSES"
+echo "CACHE-no-learner"
 echo "0001ht dataset"
 for i in {1..8}; do 
 echo $i
-avg_time 100 build/vowpalwabbit/vw ../0001_ht.dat --num_parse_threads=$i -c --quiet --passes=10 --holdout_off
+avg_time 100 build/vowpalwabbit/vw ../0001_ht.dat --num_parse_threads=$i -c --quiet --no_learner
 sleep 0.01
 done;
 echo "0001million dataset"
 for i in {1..8}; do 
 echo $i
-avg_time 10 build/vowpalwabbit/vw ../0001_million.dat --num_parse_threads=$i -c --quiet --passes=10 --holdout_off
+avg_time 100 build/vowpalwabbit/vw ../0001_million.dat --num_parse_threads=$i -c --quiet --no_learner
 sleep 0.01
 done;
 echo ""
+
+# echo "PASSES"
+# echo "0001ht dataset"
+# for i in {1..8}; do 
+# echo $i
+# avg_time 100 build/vowpalwabbit/vw ../0001_ht.dat --num_parse_threads=$i -c --quiet --passes=10 --holdout_off
+# sleep 0.01
+# done;
+# echo "0001million dataset"
+# for i in {1..8}; do 
+# echo $i
+# avg_time 10 build/vowpalwabbit/vw ../0001_million.dat --num_parse_threads=$i -c --quiet --passes=10 --holdout_off
+# sleep 0.01
+# done;
+# echo ""
 
 # echo "TEXT"
 # echo "0001ht dataset"
