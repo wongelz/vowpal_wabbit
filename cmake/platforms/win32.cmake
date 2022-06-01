@@ -19,6 +19,8 @@ if(WIN32)
     # windows and redirect all targets to the same place.
     SET(vw_win32_CMAKE_RUNTIME_OUTPUT_DIRECTORY_backup ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
     SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/binaries/")
+
+    add_custom_target(launch_vs COMMAND set "BinaryOutputBase=${CMAKE_BINARY_DIR}/binaries" && start "${CMAKE_CACHEFILE_DIR}/vowpal_wabbit.sln")
   endif()
 else()
   message(FATAL_ERROR "Loading Win32-specific configuration under a non-Win32 build.")

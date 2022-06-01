@@ -67,7 +67,11 @@ set(vw_CS_UNITTEST_COPIED_CONTENT
   json/test_newline.json
 )
 
-set(ENV{NewtonsoftDependencyValue} "Newtonsoft.Json.dll")
+
+install_nuget_package("Newtonsoft.Json" "9.0.1")
+find_nuget_lib("Newtonsoft.Json" "9.0.1")
+set(ENV{NewtonsoftDependencyValue} ${nuget_Newtonsoft.Json${netfx_nuget_REFERENCE_SEPARATOR}9.0.1_LIB})
+
 configure_t4("${vw_CS_UNITTEST_T4TEMPLATES}" vw_CS_UNITTEST_GENERATED_SOURCES)
 
 # TODO: Make AssemblyInfo a configure()ed file

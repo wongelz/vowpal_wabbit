@@ -6,6 +6,10 @@
 
 find_program(netfx_nuget_COMMAND NAMES nuget) # TODO: Ensure this works in VW / under init.cmd  
 
+# Unfortunately, if we use @ as a separator in CMAKE variable names, we will not be able to dereference them
+# directly, and will need to embed the @ using another CMAKE variable.
+SET(netfx_nuget_REFERENCE_SEPARATOR "@")
+
 # A function to parse the NuGet Reference into consitituent parts into the specified variables
 # It will export these values into its PARENT_SCOPE
 #
@@ -53,6 +57,19 @@ function(parse_nuget_reference package_name_var
     set(${reference_target_var} ${nuget_PACKAGE_NAME} PARENT_SCOPE)
   endif()
 
+endfunction()
+
+# A function to find the NuGet package lib path for a given reference.
+function(find_nuget_lib package_name 
+                        package_version)
+  # find_path caches its output, so we need to treat each nuget_REFERENCE string as a unique key 
+  # mapping to an assembly (the full reference is necessary in case a package contains multiple assemblies, 
+  # which would require individually referencing all of them.)
+  find_file(nuget_${${package_name}${netfx_nuget_REFERENCE_SEPARATOR}${package_version}}_PATH "${package_name}.${package_version}"
+      HINTS "${CMAKE_BINARY_DIR}/packages"
+      PATH_SUFFIXES ${netfx_nuget_SUFFIXES}
+      REQUIRED
+      NO_DEFAULT_PATH)
 endfunction()
 
 # A function to install a given package, given a name and version using the found nuget command.
