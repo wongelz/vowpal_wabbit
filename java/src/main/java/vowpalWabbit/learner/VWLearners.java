@@ -66,6 +66,30 @@ final public class VWLearners {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T extends VWLearner> T createActionScores(String command) {
+        if(command.indexOf("--no_stdin") == -1)
+            command += " --no_stdin";
+        long nativePointer = initialize(command);
+        VWReturnType returnType = getReturnType(nativePointer);
+
+        switch (returnType) {
+            case ActionProbs:
+            case ActionScores:
+            case Multiclass:
+            case Multilabels:
+            case Prob:
+            case Scalar:
+            case Scalars:
+            case DecisionProbs: return (T)new VWActionScoresLearner(nativePointer);
+            case Unknown:
+            default:
+                // Doing this will allow for all cases when a C object is made to be closed.
+                closeInstance(nativePointer);
+                throw new IllegalArgumentException("Unknown VW return type using command: " + command);
+        }
+    }
+
     private static native long initialize(String command);
     private static native VWReturnType getReturnType(long nativePointer);
 

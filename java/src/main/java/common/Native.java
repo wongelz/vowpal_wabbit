@@ -49,7 +49,7 @@ public class Native {
             }
 
             // load the library
-            System.load(tempDirectory.resolve("natives/linux_64/libvw_jni.so").toString());
+            System.load(tempDirectory.resolve("natives/linux_64/libvw_jni.dylib").toString());
     }
 
     static {
